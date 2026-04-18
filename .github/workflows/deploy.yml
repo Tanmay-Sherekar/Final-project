@@ -17,9 +17,15 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd final-project
-            git pull
+            set -e
+
+            cd ~/final-project
+
+            git pull origin main
+
             docker build -t final-app .
+
             docker stop app || true
             docker rm app || true
+
             docker run -d -p 80:80 --name app final-app
